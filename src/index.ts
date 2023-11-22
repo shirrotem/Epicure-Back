@@ -19,5 +19,5 @@ mongoose.connection.on("error", (error: Error) => console.log(error));
 
 app.use("/", router());
 app.get("/", (req: Request, res: Response) => {
-  res.send("Welcome to the default route!");
+  res.send("Welcome to the Epicure API!");
 });
