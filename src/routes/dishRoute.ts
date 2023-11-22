@@ -5,7 +5,7 @@ import {
   createDish,
   deleteDish,
   updateDish,
-} from "controllers/dishController";
+} from "../controllers/dishController";
 
 export default (router: express.Router) => {
   router.get("/dishes", getAllDishes);

@@ -5,7 +5,7 @@ import {
   createRestaurant,
   deleteRestaurant,
   updateRestaurants,
-} from "controllers/restaurantController";
+} from "../controllers/restaurantController";
 
 export default (router: express.Router) => {
   router.get("/restaurants", getAllRestaurants);

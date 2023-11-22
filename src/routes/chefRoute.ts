@@ -5,7 +5,7 @@ import {
   createChef,
   deleteChef,
   updateChef,
-} from "controllers/chefController";
+} from "../controllers/chefController";
 
 export default (router: express.Router) => {
   router.get("/chefs", getAllChefs);
