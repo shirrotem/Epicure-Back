@@ -11,6 +11,7 @@ const RestaurantSchema = new mongoose.Schema({
       ref: "dish",
     },
   ],
+  popularRestaurant: { type: Boolean, require: true },
 });
 
 export const RestaurantModel = mongoose.model("restaurant", RestaurantSchema);

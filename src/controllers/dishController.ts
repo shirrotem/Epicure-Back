@@ -68,15 +68,23 @@ export const updateDish = async (
 ) => {
   try {
     const { id } = req.params;
-    const { name } = req.body;
+    const { img, name, icon, ingredients, price, restaurant } = req.body;
 
-    if (!name) {
-      return res.sendStatus(400);
+    if (!img || !name || !icon || !ingredients || !price || !restaurant) {
+      return res
+        .status(400)
+        .json({ message: "Please provide all required fields" });
     }
 
     const dish = await DishModel.findById(id);
 
+    dish.img = img;
     dish.name = name;
+    dish.icon = icon;
+    dish.ingredients = ingredients;
+    dish.price = price;
+    dish.restaurant = restaurant;
+
     await dish.save();
 
     return res.status(200).json(dish);

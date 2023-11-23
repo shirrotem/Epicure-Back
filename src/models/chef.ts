@@ -10,6 +10,7 @@ const ChefSchema = new mongoose.Schema({
       ref: "restaurant",
     },
   ],
+  chefOfTheWeek: { type: Boolean, require: true },
 });
 
 export const ChefModel = mongoose.model("chef", ChefSchema);
