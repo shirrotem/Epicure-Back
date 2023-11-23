@@ -2,10 +2,12 @@ import express, { Request, Response } from "express";
 import http from "http";
 import mongoose from "mongoose";
 import router from "../src/routes/router";
+import cors from "cors";
 
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 const server = http.createServer(app);
 
