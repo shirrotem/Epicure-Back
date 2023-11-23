@@ -19,9 +19,9 @@ export const createChef = async (
   res: express.Response
 ) => {
   try {
-    const { img, name, about } = req.body;
+    const { img, name, about, restaurants } = req.body;
 
-    if (!img || !name || !about) {
+    if (!img || !name || !about || !restaurants) {
       return res
         .status(400)
         .json({ message: "Please provide all required fields" });
@@ -31,6 +31,7 @@ export const createChef = async (
       img,
       name,
       about,
+      restaurants,
     });
 
     const savedChef = await newChef.save();
@@ -65,10 +66,12 @@ export const updateChef = async (
 ) => {
   try {
     const { id } = req.params;
-    const { name } = req.body;
+    const { img, name, about, restaurants } = req.body;
 
-    if (!name) {
-      return res.status(400).json({ message: "Name is required for update" });
+    if (!img || !name || !about || !restaurants) {
+      return res
+        .status(400)
+        .json({ message: "Please provide all required fields" });
     }
 
     const chef = await ChefModel.findById(id);
@@ -77,7 +80,11 @@ export const updateChef = async (
       return res.status(404).json({ message: "Chef not found" });
     }
 
+    chef.img = img;
     chef.name = name;
+    chef.about = about;
+    chef.restaurants = restaurants;
+
     await chef.save();
 
     return res.status(200).json(chef);

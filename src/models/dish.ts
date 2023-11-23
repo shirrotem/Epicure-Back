@@ -10,6 +10,7 @@ const DishSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: "restaurant",
   },
+  signatureDish: { type: Boolean, require: true },
 });
 
 export const DishModel = mongoose.model("dish", DishSchema);
