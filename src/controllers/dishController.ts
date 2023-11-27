@@ -1,10 +1,7 @@
 import express from "express";
 import { DishModel } from "../models/dish";
 
-export const getAllDishes = async (
-  req: express.Request,
-  res: express.Response
-) => {
+export const getAllDishes = async (req: express.Request, res: express.Response) => {
   try {
     const dishes = await DishModel.find();
     return res.status(200).json(dishes);
@@ -14,17 +11,27 @@ export const getAllDishes = async (
   }
 };
 
-export const createDish = async (
-  req: express.Request,
-  res: express.Response
-) => {
+export const getDishByIngredient = async (req: express.Request, res: express.Response) => {
+  try {
+    const { ingredient } = req.params;
+    const dishes = await DishModel.find();
+    const dishesWithIngredient = dishes.filter((dish) => {
+      const ingredients = dish.ingredients.split(",").map((dish) => dish.trim().toLowerCase());
+      return ingredients.includes(ingredient.toLowerCase());
+    });
+    return res.status(200).json(dishesWithIngredient);
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(500);
+  }
+};
+
+export const createDish = async (req: express.Request, res: express.Response) => {
   try {
     const { img, name, icon, ingredients, price, restaurant } = req.body;
 
     if (!img || !name || !icon || !ingredients || !price || !restaurant) {
-      return res
-        .status(400)
-        .json({ message: "Please provide all required fields" });
+      return res.status(400).json({ message: "Please provide all required fields" });
     }
 
     const newDish = new DishModel({
@@ -44,10 +51,7 @@ export const createDish = async (
   }
 };
 
-export const deleteDish = async (
-  req: express.Request,
-  res: express.Response
-) => {
+export const deleteDish = async (req: express.Request, res: express.Response) => {
   try {
     const { id } = req.params;
 
@@ -62,18 +66,13 @@ export const deleteDish = async (
   }
 };
 
-export const updateDish = async (
-  req: express.Request,
-  res: express.Response
-) => {
+export const updateDish = async (req: express.Request, res: express.Response) => {
   try {
     const { id } = req.params;
     const { img, name, icon, ingredients, price, restaurant } = req.body;
 
     if (!img || !name || !icon || !ingredients || !price || !restaurant) {
-      return res
-        .status(400)
-        .json({ message: "Please provide all required fields" });
+      return res.status(400).json({ message: "Please provide all required fields" });
     }
 
     const dish = await DishModel.findById(id);
