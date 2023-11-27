@@ -1,14 +1,11 @@
 import express from "express";
 import { ChefModel } from "../models/chef";
 
-export const getChefOfTheWeek = async (
-  req: express.Request,
-  res: express.Response
-) => {
+export const getChefOfTheWeek = async (req: express.Request, res: express.Response) => {
   try {
     const chefOfTheWeek = await ChefModel.find({
       chefOfTheWeek: true,
-    });
+    }).populate("restaurants");
     return res.status(200).json(chefOfTheWeek);
   } catch (error) {
     console.log(error);
