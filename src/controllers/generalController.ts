@@ -3,7 +3,7 @@ import { DishModel } from "../models/dish";
 import { RestaurantModel } from "../models/restaurant";
 import { ChefModel } from "../models/chef";
 
-export const getResultsBySearch = async (req: express.Request, res: express.Response) => {
+export const searchByInput = async (req: express.Request, res: express.Response) => {
   try {
     const { searchTerm } = req.body;
 
