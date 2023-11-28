@@ -3,7 +3,7 @@ import { DishModel } from "../models/dish";
 
 export const getAllDishes = async (req: express.Request, res: express.Response) => {
   try {
-    const dishes = await DishModel.find();
+    const dishes = await DishModel.find().populate("restaurant");
     return res.status(200).json(dishes);
   } catch (error) {
     console.log(error);

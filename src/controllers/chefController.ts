@@ -1,12 +1,9 @@
 import express from "express";
 import { ChefModel } from "../models/chef";
 
-export const getAllChefs = async (
-  req: express.Request,
-  res: express.Response
-) => {
+export const getAllChefs = async (req: express.Request, res: express.Response) => {
   try {
-    const chefs = await ChefModel.find();
+    const chefs = await ChefModel.find().populate("restaurants");
     return res.status(200).json(chefs);
   } catch (error) {
     console.error(error);
@@ -14,17 +11,12 @@ export const getAllChefs = async (
   }
 };
 
-export const createChef = async (
-  req: express.Request,
-  res: express.Response
-) => {
+export const createChef = async (req: express.Request, res: express.Response) => {
   try {
     const { img, name, about, restaurants } = req.body;
 
     if (!img || !name || !about || !restaurants) {
-      return res
-        .status(400)
-        .json({ message: "Please provide all required fields" });
+      return res.status(400).json({ message: "Please provide all required fields" });
     }
 
     const newChef = new ChefModel({
@@ -42,10 +34,7 @@ export const createChef = async (
   }
 };
 
-export const deleteChef = async (
-  req: express.Request,
-  res: express.Response
-) => {
+export const deleteChef = async (req: express.Request, res: express.Response) => {
   try {
     const { id } = req.params;
 
@@ -60,18 +49,13 @@ export const deleteChef = async (
   }
 };
 
-export const updateChef = async (
-  req: express.Request,
-  res: express.Response
-) => {
+export const updateChef = async (req: express.Request, res: express.Response) => {
   try {
     const { id } = req.params;
     const { img, name, about, restaurants } = req.body;
 
     if (!img || !name || !about || !restaurants) {
-      return res
-        .status(400)
-        .json({ message: "Please provide all required fields" });
+      return res.status(400).json({ message: "Please provide all required fields" });
     }
 
     const chef = await ChefModel.findById(id);
