@@ -28,10 +28,15 @@ export const getDishByIngredient = async (req: express.Request, res: express.Res
 
 export const createDish = async (req: express.Request, res: express.Response) => {
   try {
-    const { img, name, icon, ingredients, price, restaurant } = req.body;
+    const { img, name, icon, ingredients, price, restaurant, signatureDish } = req.body;
 
-    if (!img || !name || !icon || !ingredients || !price || !restaurant) {
+    if (!img || !name || !icon || !ingredients || !price || !restaurant || signatureDish === "") {
       return res.status(400).json({ message: "Please provide all required fields" });
+    }
+
+    let signatureDishBool = false;
+    if (signatureDish === true || signatureDish === "true") {
+      signatureDishBool = true;
     }
 
     const newDish = new DishModel({
@@ -41,6 +46,7 @@ export const createDish = async (req: express.Request, res: express.Response) =>
       ingredients,
       price,
       restaurant,
+      signatureDish: signatureDishBool,
     });
 
     const savedDish = await newDish.save();
@@ -69,10 +75,15 @@ export const deleteDish = async (req: express.Request, res: express.Response) =>
 export const updateDish = async (req: express.Request, res: express.Response) => {
   try {
     const { id } = req.params;
-    const { img, name, icon, ingredients, price, restaurant } = req.body;
+    const { img, name, icon, ingredients, price, restaurant, signatureDish } = req.body;
 
-    if (!img || !name || !icon || !ingredients || !price || !restaurant) {
+    if (!img || !name || !icon || !ingredients || !price || !restaurant || signatureDish === "") {
       return res.status(400).json({ message: "Please provide all required fields" });
+    }
+
+    let signatureDishBool = false;
+    if (signatureDish === true || signatureDish === "true") {
+      signatureDishBool = true;
     }
 
     const dish = await DishModel.findById(id);
@@ -83,6 +94,7 @@ export const updateDish = async (req: express.Request, res: express.Response) =>
     dish.ingredients = ingredients;
     dish.price = price;
     dish.restaurant = restaurant;
+    dish.signatureDish = signatureDishBool;
 
     await dish.save();
 

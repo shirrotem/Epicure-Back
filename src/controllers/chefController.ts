@@ -13,10 +13,15 @@ export const getAllChefs = async (req: express.Request, res: express.Response) =
 
 export const createChef = async (req: express.Request, res: express.Response) => {
   try {
-    const { img, name, about, restaurants } = req.body;
+    const { img, name, about, restaurants, chefOfTheWeek } = req.body;
 
-    if (!img || !name || !about || !restaurants) {
+    if (!img || !name || !about || !restaurants || chefOfTheWeek === "") {
       return res.status(400).json({ message: "Please provide all required fields" });
+    }
+
+    let chefOfTheWeekBool = false;
+    if (chefOfTheWeek === true || chefOfTheWeek === "true") {
+      chefOfTheWeekBool = true;
     }
 
     const newChef = new ChefModel({
@@ -24,6 +29,7 @@ export const createChef = async (req: express.Request, res: express.Response) =>
       name,
       about,
       restaurants,
+      chefOfTheWeek: chefOfTheWeekBool,
     });
 
     const savedChef = await newChef.save();
@@ -52,9 +58,9 @@ export const deleteChef = async (req: express.Request, res: express.Response) =>
 export const updateChef = async (req: express.Request, res: express.Response) => {
   try {
     const { id } = req.params;
-    const { img, name, about, restaurants } = req.body;
+    const { img, name, about, restaurants, chefOfTheWeek } = req.body;
 
-    if (!img || !name || !about || !restaurants) {
+    if (!img || !name || !about || !restaurants || chefOfTheWeek === "") {
       return res.status(400).json({ message: "Please provide all required fields" });
     }
 
@@ -63,12 +69,16 @@ export const updateChef = async (req: express.Request, res: express.Response) =>
     if (!chef) {
       return res.status(404).json({ message: "Chef not found" });
     }
+    let chefOfTheWeekBool = false;
+    if (chefOfTheWeek === true || chefOfTheWeek === "true") {
+      chefOfTheWeekBool = true;
+    }
 
     chef.img = img;
     chef.name = name;
     chef.about = about;
     chef.restaurants = restaurants;
-
+    chef.chefOfTheWeek = chefOfTheWeekBool;
     await chef.save();
 
     return res.status(200).json(chef);

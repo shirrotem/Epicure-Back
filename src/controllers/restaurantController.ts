@@ -13,10 +13,15 @@ export const getAllRestaurants = async (req: express.Request, res: express.Respo
 
 export const createRestaurant = async (req: express.Request, res: express.Response) => {
   try {
-    const { img, name, chef, rating, dishes } = req.body;
+    const { img, name, chef, rating, dishes, popularRestaurant } = req.body;
 
-    if (!img || !name || !chef || !rating || !dishes) {
+    if (!img || !name || !chef || !rating || !dishes || popularRestaurant === "") {
       return res.status(400).json({ message: "Please provide all required fields" });
+    }
+
+    let popularRestaurantBool = false;
+    if (popularRestaurant === true || popularRestaurant === "true") {
+      popularRestaurantBool = true;
     }
     const newRestaurant = new RestaurantModel({
       img,
@@ -24,6 +29,7 @@ export const createRestaurant = async (req: express.Request, res: express.Respon
       chef,
       rating,
       dishes,
+      popularRestaurant: popularRestaurantBool,
     });
     const savedRestaurant = await newRestaurant.save();
     return res.status(201).json(savedRestaurant);
@@ -51,10 +57,15 @@ export const deleteRestaurant = async (req: express.Request, res: express.Respon
 export const updateRestaurants = async (req: express.Request, res: express.Response) => {
   try {
     const { id } = req.params;
-    const { img, name, chef, rating, dishes } = req.body;
+    const { img, name, chef, rating, dishes, popularRestaurant } = req.body;
 
-    if (!img || !name || !chef || !rating || !dishes) {
+    if (!img || !name || !chef || !rating || !dishes || popularRestaurant === "") {
       return res.status(400).json({ message: "Please provide all required fields" });
+    }
+
+    let popularRestaurantBool = false;
+    if (popularRestaurant === true || popularRestaurant === "true") {
+      popularRestaurantBool = true;
     }
 
     const restaurant = await RestaurantModel.findById(id);
@@ -64,6 +75,7 @@ export const updateRestaurants = async (req: express.Request, res: express.Respo
     restaurant.chef = chef;
     restaurant.rating = rating;
     restaurant.dishes = dishes;
+    restaurant.popularRestaurant = popularRestaurantBool;
 
     await restaurant.save();
 
